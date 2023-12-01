@@ -1,0 +1,105 @@
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub User Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>GitHub User Search</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">email:</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter email" name="username">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("form").submit(function(e){
+                e.preventDefault();
+                let email = $("#email").val();
+                $.ajax({
+                    url: `https://api.github.com/users/${email}`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data){
+                        let user = data.items[0];
+                        if(user){
+                        let html = `
+                            <div class="card" style="width: 18rem;">
+                                <img src="${data.avatar_url}" class="card-img-top" alt="Profile Picture">
+                                <div class="card-body">
+                                    <h5 class="card-title">${data.login}</h5>
+                                    <p class="card-text">ID: ${data.id}</p>
+                                    <p class="card-text">Public Repositories: ${data.public_repos}</p>
+                                    <p class="card-text">Followers: ${data.followers}</p>
+                                    <p class="card-text">Following: ${data.following}</p>
+                                </div>
+                            </div>
+                        `;
+                        $("#result").html(html);
+                         }
+                         else {
+                            $("#result").html('<p>User not found.</p>');
+                    }
+                    error: function(xhr, status, error){
+                        $("#result").html('<p>User not found.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <title>GitHub User Search</title>
+   
+ </head>
+ <body>
+     <header>
+         <h1>GitHub User Search</h1>
+     </header>
+     <main>
+         <input type="text" id="usernameInput" placeholder="Enter GitHub username">
+         <button onclick="searchUser()">Search</button>
+         <div id="userInfo"></div>
+     </main>
+     <script>function searchUser() {
+        const username = document.getElementById('usernameInput').value;
+    
+        fetch(`https://api.github.com/users/${username}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Not Found') {
+                    document.getElementById('userInfo').innerHTML = '<p>User not found</p>';
+                } else {
+                    const userInfo = `
+                        <img src="${data.avatar_url}" alt="${data.login}" style="width: 100px; border-radius: 50%;">
+                        <h2>${data.login}</h2>
+                        <p>${data.name || 'Name not available'}</p>
+                        <p>${data.bio || 'Bio not available'}</p>
+                        <p>Followers: ${data.followers}</p>
+                        <p>Following: ${data.following}</p>
+                    `;
+                    document.getElementById('userInfo').innerHTML = userInfo;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    </script>
+ </body>
+ </html>
