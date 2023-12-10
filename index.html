@@ -65,11 +65,12 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="Style.css">
      <title>GitHub User Search</title>
    
  </head>
  <body>
+    <div class="container">
      <header>
          <h1>GitHub User Search</h1>
      </header>
@@ -77,6 +78,7 @@
          <input type="text" id="usernameInput" placeholder="Enter GitHub username">
          <button onclick="searchUser()">Search</button>
          <div id="userInfo"></div>
+        </div>
      </main>
      <script>function searchUser() {
         const username = document.getElementById('usernameInput').value;
